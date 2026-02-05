@@ -9,7 +9,22 @@ import { Textarea } from "@/components/ui/Textarea";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 
+import { useState } from "react";
+
 export default function ContactPage() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        setIsSubmitting(false);
+        setIsSuccess(true);
+    };
     return (
         <div className="bg-brand-dark min-h-screen flex flex-col">
             <Header />
@@ -75,42 +90,57 @@ export default function ContactPage() {
 
                                 <h2 className="text-xl font-bold text-white mb-6">Request Access</h2>
 
-                                <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                                    <div className="grid grid-cols-2 gap-5">
-                                        <div className="space-y-2">
-                                            <label htmlFor="firstName" className="text-xs font-medium text-slate-400 uppercase tracking-wide">First Name</label>
-                                            <Input id="firstName" placeholder="Jane" />
+                                {!isSuccess ? (
+                                    <form className="space-y-5" onSubmit={handleSubmit}>
+                                        <div className="grid grid-cols-2 gap-5">
+                                            <div className="space-y-2">
+                                                <label htmlFor="firstName" className="text-xs font-medium text-slate-400 uppercase tracking-wide">First Name</label>
+                                                <Input id="firstName" placeholder="Jane" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="lastName" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Last Name</label>
+                                                <Input id="lastName" placeholder="Doe" required />
+                                            </div>
                                         </div>
+
                                         <div className="space-y-2">
-                                            <label htmlFor="lastName" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Last Name</label>
-                                            <Input id="lastName" placeholder="Doe" />
+                                            <label htmlFor="email" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Work Email</label>
+                                            <Input id="email" type="email" placeholder="jane@company.com" required />
                                         </div>
+
+                                        <div className="space-y-2">
+                                            <label htmlFor="company" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Company</label>
+                                            <Input id="company" placeholder="Acme Inc." required />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label htmlFor="message" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Use Case / Message</label>
+                                            <Textarea id="message" placeholder="We're looking to automate..." rows={4} required />
+                                        </div>
+
+                                        <Button className="w-full justify-center group" size="lg" disabled={isSubmitting}>
+                                            {isSubmitting ? "Submitting..." : "Apply for Access"}
+                                            {!isSubmitting && <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />}
+                                        </Button>
+
+                                        <p className="text-xs text-center text-slate-500 mt-4">
+                                            By submitting, you agree to our Terms of Service and Privacy Policy.
+                                        </p>
+                                    </form>
+                                ) : (
+                                    <div className="text-center py-10">
+                                        <div className="w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/30">
+                                            <Check className="w-8 h-8" />
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-white mb-2">Request Received!</h3>
+                                        <p className="text-slate-400 mb-8">
+                                            Thanks for your interest in Agent Dynamo. Our team will review your application and be in touch shortly.
+                                        </p>
+                                        <Button variant="outline" onClick={() => setIsSuccess(false)}>
+                                            Submit Another Request
+                                        </Button>
                                     </div>
-
-                                    <div className="space-y-2">
-                                        <label htmlFor="email" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Work Email</label>
-                                        <Input id="email" type="email" placeholder="jane@company.com" />
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label htmlFor="company" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Company</label>
-                                        <Input id="company" placeholder="Acme Inc." />
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label htmlFor="message" className="text-xs font-medium text-slate-400 uppercase tracking-wide">Use Case / Message</label>
-                                        <Textarea id="message" placeholder="We're looking to automate..." rows={4} />
-                                    </div>
-
-                                    <Button className="w-full justify-center group" size="lg">
-                                        Apply for Access
-                                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                                    </Button>
-
-                                    <p className="text-xs text-center text-slate-500 mt-4">
-                                        By submitting, you agree to our Terms of Service and Privacy Policy.
-                                    </p>
-                                </form>
+                                )}
                             </motion.div>
                         </div>
                     </div>
