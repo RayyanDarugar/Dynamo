@@ -34,7 +34,7 @@ export function Header() {
                     {["Product", "Solutions", "Enterprise", "Pricing"].map((item) => (
                         <Link
                             key={item}
-                            href={`#${item.toLowerCase()}`}
+                            href={`/#${item.toLowerCase()}`}
                             className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
                         >
                             {item}
