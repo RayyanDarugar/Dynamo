@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --color-brand-blue: #3B82F6;
+  --color-brand-cyan: #22D3EE;
+  --color-brand-purple: #A855F7;
+
+  --color-brand-dark: #020617;
+  /* Slate 950 */
+  --color-brand-card: #0F172A;
+  /* Slate 900 */
+  --color-brand-border: #1E293B;
+  /* Slate 800 */
+  --color-brand-light: #F8FAFC;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer utilities {
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-brand-blue via-brand-cyan to-brand-purple;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  .bg-gradient-brand {
+    @apply bg-linear-to-r from-brand-blue via-brand-cyan to-brand-purple;
+  }
+
+  /* Technical/Infrastructure Utilities - Dark Mode */
+  .tech-border {
+    @apply border border-white/10;
+  }
+
+  .tech-card {
+    @apply bg-brand-card/50 backdrop-blur-sm border border-white/10 shadow-2xl shadow-black/50 rounded-xl;
+  }
+
+  /* Animated Grid Background */
+  .tech-grid-bg {
+    background-size: 50px 50px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 20px -5px var(--color-brand-blue);
+  }
+
+  /* Marquee Animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--color-brand-dark);
+  color: var(--color-brand-light);
+  @apply antialiased selection:bg-brand-blue/30 selection:text-white;
 }
