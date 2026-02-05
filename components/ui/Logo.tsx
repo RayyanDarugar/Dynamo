@@ -16,12 +16,15 @@ export function Logo({ variant = "color", className, width = 140, height = 40 }:
     // Based on file analysis, I will determine the paths.
     // For now I'm writing the structure.
 
-    let src = "/brand/colordynamo.svg";
+    // Base path helper
+    const basePath = "/Dynamo";
+
+    let src = `${basePath}/brand/colordynamo.svg`;
 
     if (variant === "white") {
-        src = "/brand/whitedynamo.svg";
+        src = `${basePath}/brand/whitedynamo.svg`;
     } else if (variant === "black") {
-        src = "/brand/dynamologo.svg"; // Assuming this is the black one based on size difference
+        src = `${basePath}/brand/dynamologo.svg`;
     }
 
     return (
